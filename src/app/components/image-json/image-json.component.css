@@ -1,0 +1,6 @@
+.imageContainer{
+    height: 505px;
+    width: 100vh;
+    overflow-y: scroll;
+}
+
