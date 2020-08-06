@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ImageJSONComponent } from './image-json.component';
 
-describe('ImageJSONComponent', () => {
+fdescribe('ImageJSONComponent', () => {
   let component: ImageJSONComponent;
   let fixture: ComponentFixture<ImageJSONComponent>;
 
@@ -11,12 +11,14 @@ describe('ImageJSONComponent', () => {
   //     declarations: [ ImageJSONComponent ]
   //   })
   //   .compileComponents();
+
+
   // }));
 
   // beforeEach(() => {
-  //   fixture = TestBed.createComponent(ImageJSONComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
+  //   const fixture = TestBed.createComponent(ImageJSONComponent);
+  //   const app = fixture.debugElement.componentInstance;
+  //   expect(app).toBeTruthy();
   // });
 
   // it('should create', () => {

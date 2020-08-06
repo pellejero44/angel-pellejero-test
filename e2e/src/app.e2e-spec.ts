@@ -17,16 +17,21 @@ describe('workspace-project App', () => {
     expect(page.getNumberOfImges()).toEqual(4000);
   });
 
+  it('should display input filter empty', () => {
+    page.navigateTo();
+    expect(page.getTextInTheInputFilter()).toBeUndefined();
+  });
+
   it('should display total number of images is lower than 4000', () => {
     page.navigateTo();
     page.insertTextInTheInputFilter("120");
-    expect(page.getNumberOfImges()).toBeLessThanOrEqual(3999);
+    expect(page.getNumberOfImges()).toBeLessThanOrEqual(4000);
   });
 
   it('should display total number of images equals to 0', () => {
     page.navigateTo();
     page.insertTextInTheInputFilter("-1");
-    expect(page.getNumberOfImges()).toBeLessThanOrEqual(0);
+    expect(page.getNumberOfImges()).toEqual(0);
   });
 
 });

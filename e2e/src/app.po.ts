@@ -13,6 +13,10 @@ export class AppPage {
     return element.all(by.className('imgJSON')).count();
   }
 
+  getTextInTheInputFilter(){
+    element(by.css('app-root .content app-image-json input')).getText();
+  }
+
   insertTextInTheInputFilter(str){
     element(by.css('app-root .content app-image-json input')).sendKeys(str);
   }
