@@ -40,7 +40,6 @@ describe('ImageFilterPipe', () => {
         new ImageJSON("2","https://picsum.photos/id/1/500/500", "Duis feugiat enim vel augue varius consectetur"),
         new ImageJSON("3","https://picsum.photos/id/2/500/500", "Cras quis tincidunt mi")
       ];
-
       expect(pipe.transform(list, 'd')).toEqual(list);
       expect(pipe.transform(list, 'Cras')).toEqual([
         new ImageJSON("1","https://picsum.photos/id/1/500/500", "Cras quis tincidunt mi"),

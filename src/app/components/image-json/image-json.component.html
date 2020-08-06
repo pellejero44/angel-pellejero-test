@@ -4,7 +4,7 @@
 <div class="image-list imageContainer" lazy-load-images>
     <figure class="figure">
         <div *ngFor="let imageJSON of imageJSON_List | imageFilter: searchedKeyword">
-            <img [attr.data-src]='imageJSON.photo'>
+            <img [attr.data-src]='imageJSON.photo' class="imgJSON">
             <figcaption class="figure-caption">{{imageJSON.text}}</figcaption>
         </div>
     </figure>
