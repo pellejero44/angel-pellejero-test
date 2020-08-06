@@ -2,10 +2,14 @@
          [(ngModel)]="searchedKeyword">
 
 <div class="image-list imageContainer" lazy-load-images>
-    <figure class="figure">
         <div *ngFor="let imageJSON of imageJSON_List | imageFilter: searchedKeyword">
-            <img [attr.data-src]='imageJSON.photo' class="imgJSON">
-            <figcaption class="figure-caption">{{imageJSON.text}}</figcaption>
+            <div class="row">
+                <div class="col-xl-6 col-sl-12">
+                    <img [attr.data-src]='imageJSON.photo' class="imgJSON">
+                </div>
+                <div class="col-xl-6 col-sl-12">
+                    <p class="figure-caption">{{imageJSON.text}}</p>
+                </div>
+            </div>
         </div>
-    </figure>
 </div>
