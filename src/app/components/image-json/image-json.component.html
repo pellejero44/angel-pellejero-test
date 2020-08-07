@@ -5,8 +5,8 @@
     </span>
 </div>
 
-<div class="image-list imageContainer" lazy-load-images>
-        <div *ngFor="let imageJSON of imageJSON_List | imageFilter: searchedKeyword">
+<div class="image-list imageContainer" ldImages>
+        <div *ngFor="let imageJSON of imageJSONList | imageFilter: searchedKeyword">
             <div class="row">
                 <div class="col-xl-6 col-sl-12">
                     <img [attr.data-src]='imageJSON.photo' class="imgJSON">
