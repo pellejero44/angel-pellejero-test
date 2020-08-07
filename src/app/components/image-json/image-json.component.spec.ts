@@ -37,7 +37,7 @@ describe('ImageJSONComponent', () => {
     expect(component.imageJSON_List.length).toEqual(4000);
   });
 
-  it('after detect changes should display 4000 images rendered', () => {
+  it('after detect changes should display 4000 images on the container', () => {
     expect(compiled.querySelectorAll('img').length).toEqual(4000);
   });
 

@@ -1,5 +1,9 @@
-<input type="text" class="form-control"  placeholder="Enter Keyword for filter result"
-         [(ngModel)]="searchedKeyword">
+<div class="input-group searcher">
+    <input type="text" class="form-control"  placeholder="Enter Keyword for filter result" [(ngModel)]="searchedKeyword">
+    <span class="input-group-append">
+        <div class="input-group-text bg-transparent">🔍</div>
+    </span>
+</div>
 
 <div class="image-list imageContainer" lazy-load-images>
         <div *ngFor="let imageJSON of imageJSON_List | imageFilter: searchedKeyword">

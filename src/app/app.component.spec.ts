@@ -27,15 +27,15 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'A.Pellejero.Test'`, () => {
+  it(`var title should have this value 'A.Pellejero.Test'`, () => {
     expect(component.title).toEqual('A.Pellejero.Test');
   });
 
-  it('should render title', () => {
+  it(`var title should render in a span and contain the word 'Pellejero'`, () => {
     expect(compiled.querySelector('.toolbar span').textContent).toContain('Pellejero');
   });
 
-  it('should create the nested component', () => {
+  it('should create the nested component app-image-json', () => {
     expect(compiled.querySelector('app-image-json')).not.toBeNull();
   });
 

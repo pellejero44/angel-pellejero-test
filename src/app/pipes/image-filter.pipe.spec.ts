@@ -12,7 +12,7 @@ describe('ImageFilterPipe', () => {
       expect(pipe).toBeTruthy();
     });
 
-    it('Return the same list if the "term" is invalid', () => {
+    it('return the same list if the "term" is invalid', () => {
       const list = [
         new ImageJSON("1","https://picsum.photos/id/1/500/500", "Cras quis tincidunt mi"),
         new ImageJSON("2","https://picsum.photos/id/1/500/500", "Duis feugiat enim vel augue varius consectetur"),
@@ -26,7 +26,7 @@ describe('ImageFilterPipe', () => {
       expect(pipe.transform(list, new Date)).toBe(list);
     });
 
-    it('Return the same list if the "list" is invalid', () => {
+    it('return the same list if the "list" is invalid', () => {
       const dateList = [ new Date(), new Date()];
       expect(pipe.transform(null, 'hello')).toBe(null);
       expect(pipe.transform(undefined, 'hello')).toBe(undefined);      
@@ -34,7 +34,7 @@ describe('ImageFilterPipe', () => {
       expect(pipe.transform('_', 'hello')).toBe('_');
     });
 
-    it('Filter the array if the "terms" are valid', () => {
+    it('filter the array if the "terms" are valid', () => {
       const list = [
         new ImageJSON("1","https://picsum.photos/id/1/500/500", "Cras quis tincidunt mi"),
         new ImageJSON("2","https://picsum.photos/id/1/500/500", "Duis feugiat enim vel augue varius consectetur"),

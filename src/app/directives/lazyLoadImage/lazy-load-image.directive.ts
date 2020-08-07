@@ -1,15 +1,5 @@
-import { Directive, ElementRef, Renderer2, Input, NgZone, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Directive, ElementRef, Renderer2, Input, Inject, PLATFORM_ID } from '@angular/core';
 
-declare var require: any;
-
-/**
- * Angular Lazy Loading Images Directive
- *
- * The library allows to lazy load images from your web application
- * using the MutationObserver and the IntersectionObserver. Images will be loaded as
- * soon as they enter the viewport in a non-blocking way.
- */
 @Directive({
   selector: '[lazy-load-images]'
 })
@@ -20,13 +10,9 @@ export class LazyLoadImagesDirective {
   intersectionObserver: IntersectionObserver;
   rootElement: HTMLElement;
 
-  constructor(
-    element: ElementRef,
-    public renderer: Renderer2,
-    public ngZone: NgZone,
-    @Inject(PLATFORM_ID) private platformId: any) {
-    this.rootElement = element.nativeElement;
-  }
+  constructor(element: ElementRef,public renderer: Renderer2) {
+      this.rootElement = element.nativeElement;
+    }
 
   init() {
     this.registerIntersectionObserver();
@@ -38,20 +24,13 @@ export class LazyLoadImagesDirective {
   }
   
   ngOnInit() {
-    if (!this.isBrowser()) {
-      return;
-    }
-    this.ngZone.runOutsideAngular(() => this.init());
+    this.init()
   }
   
   ngOnDestroy() {
     if (this.intersectionObserver) {
       this.intersectionObserver.disconnect();
     }
-  }
-
-  isBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
   }
 
   registerIntersectionObserver() {
