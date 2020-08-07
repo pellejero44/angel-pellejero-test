@@ -4,13 +4,10 @@ import { Directive, ElementRef, Renderer2, Input, OnInit, OnDestroy } from '@ang
   selector: '[ldImages]'
 })
 export class LazyLoadImagesDirective implements OnInit, OnDestroy{
-
-  @Input('ldImages') intersectionObserverConfig: Object;
-
   private intersectionObserver: IntersectionObserver;
   private rootElement: HTMLElement;
 
-  constructor(element: ElementRef,public renderer: Renderer2) {
+  constructor(private element: ElementRef, private renderer: Renderer2) {
       this.rootElement = element.nativeElement;
     }
 
@@ -35,10 +32,9 @@ export class LazyLoadImagesDirective implements OnInit, OnDestroy{
   
   private registerIntersectionObserver(): IntersectionObserver {
     this.intersectionObserver = new IntersectionObserver(
-      images => images.forEach(image => this.onIntersectionChange(image)),
-      this.intersectionObserverConfig instanceof Object ? this.intersectionObserverConfig : undefined
+      images => images.forEach(image => this.onIntersectionChange(image))
     );
-
+    
     return this.intersectionObserver;
   }
 
