@@ -1,33 +1,32 @@
 
 $fontFamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$marginForImageinToolBar:0 16px;
+$marginForImageInToolBar:0 16px;
 $zeroPx:0px;
 $blueColor:#1976d2;
 $takeAllDiv: 100%;
 
- *{ 
+*{ 
     margin:$zeroPx; 
     padding:$zeroPx; 
-  }
-  
-  :host {
+}
+
+:host {
     font-family: $fontFamily;
     font-size: 14px;
-  }
+}
 
-  .toolbar {
+.toolbar {
     height: 60px;
     display: flex;
     align-items: center;
     background-color: $blueColor;
     color: white;
     font-weight: 600;
-  }
+    img {
+        margin: $marginForImageInToolBar;
+    }
+}
 
-  .toolbar img {
-    margin: $marginForImageinToolBar;
-  }
-
-  .app-image-json {
+.app-image-json {
     width: $takeAllDiv;
-  }
+}

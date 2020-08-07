@@ -22,12 +22,8 @@ export class LazyLoadImagesDirective implements OnInit, OnDestroy{
   }
 
   private init():void {
-    this.registerIntersectionObserver();
-    
-    this.observeDOMChanges(this.rootElement, () => {
-      const imagesFoundInDOM = this.getAllImagesToLazyLoad(this.rootElement);
-      imagesFoundInDOM.forEach((image: HTMLElement) => this.intersectionObserver.observe(image));
-    });
+    this.registerIntersectionObserver();    
+    this.observeDOMChanges(this.rootElement);
   }
   
   private registerIntersectionObserver(): IntersectionObserver {
@@ -38,8 +34,8 @@ export class LazyLoadImagesDirective implements OnInit, OnDestroy{
     return this.intersectionObserver;
   }
 
-  private observeDOMChanges(rootElement: HTMLElement, onChange: Function): MutationObserver {
-    const observer = new MutationObserver(mutations => onChange(mutations));
+  private observeDOMChanges(rootElement: HTMLElement): MutationObserver {
+    const observer = new MutationObserver(mutations => this.observeAllImagesInDOM());
 
     const observerConfig = {
       attributes: true,
@@ -50,16 +46,21 @@ export class LazyLoadImagesDirective implements OnInit, OnDestroy{
 
     observer.observe(rootElement, observerConfig);
 
-    onChange();
+    this.observeAllImagesInDOM();
 
     return observer;
+  }
+  
+  private observeAllImagesInDOM():void {
+    const imagesFoundInDOM = this.getAllImagesToLazyLoad(this.rootElement);
+    imagesFoundInDOM.forEach((image: HTMLElement) => this.intersectionObserver.observe(image));
   }
 
   private getAllImagesToLazyLoad(pageNode: HTMLElement) {
     return Array.from(pageNode.querySelectorAll('img[data-src]'));
   }
 
-  private onIntersectionChange(image: any) {
+  private onIntersectionChange(image: IntersectionObserverEntry) {
     if (!image.isIntersecting) {
       return;
     }

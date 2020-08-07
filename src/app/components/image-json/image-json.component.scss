@@ -4,9 +4,9 @@ $takeAllDiv: 100%;
     height: 83vh;
     width: $takeAllDiv;
     overflow-y: scroll;
+    .row{
+        width: 95%;
+        padding: 5px;
+    }
 }
 
-.imageContainer  .row{
-    width: 95%;
-    padding: 5px;
-}
