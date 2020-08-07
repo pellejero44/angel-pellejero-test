@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { ImageJSON } from 'src/app/models/imageJsSON-model';
 import { LazyLoadImagesDirective } from './lazy-load-image.directive';
@@ -6,7 +6,7 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
 @Component({
     selector: 'app-test-container',
     template: `
-                <div class="image-list imageContainer" lazy-load-images>
+                <div #scrollMe class="image-list imageContainer" lazy-load-images>
                     <div *ngFor="let imageJSON of imageJSON_List">
                         <div class="row">
                             <div class="col-xl-6 col-sl-12">
@@ -24,6 +24,7 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
 
     imageJSON_List: ImageJSON[];
     searchedKeyword: string;
+
     constructor() { }
   
     ngOnInit(): void {
@@ -57,11 +58,6 @@ fdescribe('LazyLoadImagesDirective', () => {
     let component: ContainerComponent;
     let fixture: ComponentFixture<ContainerComponent>;
     let compiled: HTMLElement;
-    
-    // const observeMock = {
-    //     observe: () => null,
-    //     unobserve: () => null 
-    //   };
 
       beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -70,7 +66,6 @@ fdescribe('LazyLoadImagesDirective', () => {
                 LazyLoadImagesDirective
             ]
           });
-       // (<any> window).IntersectionObserver = () => observeMock;
       }));
 
       beforeEach(async(() => {
@@ -83,4 +78,26 @@ fdescribe('LazyLoadImagesDirective', () => {
       it('should create the componet', () => {
         expect(component).toBeTruthy();
       });
+
+    //   fit('The last img that is in the viewport, his src doesnt should be null', () => {
+    //     var spyEvent = spyOnEvent('#some_element', 'click')
+    //     expect(compiled.querySelectorAll('img')[0].getAttribute('src'))
+    //     .not.toBeNull();
+    //   });
+
+      it('The last img that is not in the viewport, his src should be null', () => {
+        const imagesFoundInDOM = compiled.querySelectorAll('img');
+        expect(imagesFoundInDOM[imagesFoundInDOM.length - 1].getAttribute('src'))
+            .toBeNull();
+      });
+
+    //   it(`If we scroll unilt the end, the last img that will be in the viewport, 
+    //   then his src doesnt should be null`, () => {        
+    //     const imagesFoundInDOM = compiled.querySelectorAll('img');
+    //     compiled.scrollTop = compiled.scrollHeight;
+    //     fixture.detectChanges();
+    //     console.log(compiled.scrollHeight);
+    //     expect(imagesFoundInDOM[imagesFoundInDOM.length - 1].getAttribute('src'))
+    //         .not.toBeNull();
+    //   });
 });
