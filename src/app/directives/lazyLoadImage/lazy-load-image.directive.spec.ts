@@ -54,7 +54,7 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
       }
    }
   
-fdescribe('LazyLoadImagesDirective', () => {
+describe('LazyLoadImagesDirective', () => {
     let component: ContainerComponent;
     let fixture: ComponentFixture<ContainerComponent>;
     let compiled: HTMLElement;

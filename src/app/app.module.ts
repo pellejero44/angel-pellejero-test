@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ImageJSONComponent } from './components/image-json/image-json.component';
 import { LazyLoadImagesModule } from './directives/lazyLoadImage/lazy-load-image.module';
 import { ImageFilterPipe } from './pipes/image-filter.pipe';
+import { ImageJsonService } from './services/image-json.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { ImageFilterPipe } from './pipes/image-filter.pipe';
     LazyLoadImagesModule,
     FormsModule
   ],
-  providers: [],
+  providers: [ImageJsonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
