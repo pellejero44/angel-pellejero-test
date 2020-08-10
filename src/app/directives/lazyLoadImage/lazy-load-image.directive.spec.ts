@@ -1,5 +1,5 @@
-import { Component, OnInit} from '@angular/core';
-import { async, TestBed, ComponentFixture} from '@angular/core/testing';
+import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { async, TestBed, ComponentFixture, tick, fakeAsync} from '@angular/core/testing';
 import { ImageJSON } from 'src/app/models/imageJsSON-model';
 import { LazyLoadImagesDirective } from './lazy-load-image.directive';
 
@@ -7,7 +7,7 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
     selector: 'app-test-container',
     template: `
     <div  class="image-list imageContainer" ldImages (inViewportChange)="imageIsIntersecting($event)" 
-    (onLoadError)="imageFailLoadHandler($event)">
+    (onLoadError)="imageFailLoadHandler($event)" (imagesInViewPortEmitter)="imagesViewPortHandler($event)">
         <div *ngFor="let imageJSON of imageJSON_List;">
             <div class="row">
                 <div class="col-xl-6 col-sl-12">
@@ -22,16 +22,16 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
     `
   })
   class ContainerComponent implements OnInit {
-
+    private imageLoadedCounter:number;
     public imageJSON_List: ImageJSON[];
-    public imageLoadedCounter:number;
-    public imageFailedCounter:number;    
+    
+    @Output() imageFailedEmiter:EventEmitter<boolean> = new EventEmitter(); ;    
+    @Output() imagesViewPortEmiter: EventEmitter<void>= new EventEmitter();;
     
     constructor() { }
   
     ngOnInit(): void {
-        this.imageLoadedCounter=1;
-        this.imageFailedCounter=1;
+        this.imageLoadedCounter=0;
         this.imageJSON_List= [];
         this.createJSON();
     }
@@ -47,37 +47,35 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
        'Duis feugiat enim vel augue varius consectetur.' ,
        'Donec porta, ipsum ut lacinia scelerisque, sem turpis venenatis tortor, ac molestie lectus massa eleifend tellus.',
        'Sed feugiat eleifend massa, ut volutpat ante ullamcorper quis. In dictum elementum turpis.'];    
-       let randomNumber =Math.floor(Math.random() * text.length)
+       let randomNumber = Math.floor(Math.random() * text.length)
+        let randomText=  text[randomNumber];
 
-       return text[randomNumber];
+       return randomText;
     }
 
     public imageIsIntersecting():void{
-      this.imageLoadedCounter++;
+      this.imageLoadedCounter++;   
     }
 
     public imageFailLoadHandler():void{
-      this.imageFailedCounter++;
+      this.imageFailedEmiter.emit(true);     
+    }
+
+    public imagesViewPortHandler():void{
+      this.imagesViewPortEmiter.emit();   
     }
 
     public createJSON():void{
       for(let i =0; i< 40; i++){
-        this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'/500/500', this.getRandomText()));
+        if(i==2)
+          this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'fake/500/500', this.getRandomText()));
+        else
+          this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'/500/500', this.getRandomText()));
       }
     }
 
-    public createJSONWithBadURLs():void{
-      this.imageJSON_List=[];
-      for(let i =0; i< 5; i++){
-        if(i % 2==0)
-          this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'/500/500', this.getRandomText()));
-          else
-          this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'fake/500/500', this.getRandomText()));
-      }
-    }
-   }
-  
-fdescribe('LazyLoadImagesDirective', () => {
+}
+describe('LazyLoadImagesDirective', () => {
     let component: ContainerComponent;
     let fixture: ComponentFixture<ContainerComponent>;
     let compiled: HTMLElement;
@@ -94,46 +92,50 @@ fdescribe('LazyLoadImagesDirective', () => {
       beforeEach(async(() => {
         fixture = TestBed.createComponent(ContainerComponent);
         component = fixture.debugElement.componentInstance;
-        compiled = fixture.debugElement.nativeElement;
-
-        fixture.detectChanges();
+        compiled = fixture.debugElement.nativeElement;   
+                
       }));
 
       it('should create the componet', () => {
         expect(component).toBeTruthy();
+        fixture.detectChanges();  
       });
 
       it('The last img that is in the viewport, his src doesnt should be null', (done:DoneFn) => {
-        setTimeout(() => {
-          expect(compiled.querySelectorAll('img')[0].getAttribute('src')).not.toBeNull();
+        component.imagesViewPortEmiter.subscribe(() => {          
+          let source= compiled.querySelectorAll('img')[0].getAttribute('src');
+          expect(source).not.toBeNull();
           done();
-        }, 1000);        
+        });   
+        fixture.detectChanges();      
       });
 
-      it('The last img that is not in the viewport, his src should be null', (done:DoneFn) => {
-        setTimeout(() => {
-        const imagesFoundInDOM = compiled.querySelectorAll('img');
-        expect(imagesFoundInDOM[imagesFoundInDOM.length - 1].getAttribute('src'))
-            .toBeNull();
-            done();
-        }, 1000);   
+      it('The last img that is not in the viewport, his src should be null', (done:DoneFn) => {       
+        component.imagesViewPortEmiter.subscribe(() => {
+          const imagesFoundInDOM = compiled.querySelectorAll('img');
+          let source= imagesFoundInDOM[imagesFoundInDOM.length - 1].getAttribute('src');
+          expect(source).toBeNull();
+          done();
+        });
+        fixture.detectChanges();      
       });
 
 
-      it('if there are 40 images to load, the viewport only load the images that are in the viewport', (done:DoneFn) => {
-        setTimeout(() => {
+      it('if there are 40 images to load, the viewport only load the images that are in the viewport', 
+      (done:DoneFn) => { 
+        component.imagesViewPortEmiter.subscribe(() => {
           expect(component.imageLoadedCounter).toBeLessThan(40); 
           done();
-        }, 1000); 
+        });
+        fixture.detectChanges();    
       });
 
        it('if some image fail on load, the image will  load an auxiliar image', (done:DoneFn) => {       
-        setTimeout(() => {
-          expect(component.imageFailedCounter).toBeGreaterThan(2); 
+        component.imageFailedEmiter.subscribe((x) => {
+          expect(x).toBe(true); 
           done();
-        }, 1500);  
-        component.createJSONWithBadURLs();
-        fixture.detectChanges();
+        });  
+        fixture.detectChanges();  
       });
 
 

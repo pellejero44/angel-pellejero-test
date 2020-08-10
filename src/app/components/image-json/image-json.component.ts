@@ -17,7 +17,7 @@ export class ImageJSONComponent implements OnInit {
     this.createJSON();
   }
 
-  public createJSON():void{
+  private createJSON():void{
     this.imageJSONList = this.imageJsonService.getJSON();
   }
 

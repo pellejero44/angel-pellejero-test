@@ -8,7 +8,7 @@ export class ImageJsonService {
 
   constructor() { }
 
-  public getRandomText(): string {
+  private getRandomText(): string {
     let randomText='';
     let text =['Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
      'Vivamus iaculis condimentum turpis eu molestie. Sed sed lectus sit amet nulla ornare eleifend.',

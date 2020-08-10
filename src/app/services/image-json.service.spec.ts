@@ -21,8 +21,9 @@ describe('ImageJsonService', () => {
   });
 
   it('if the method getJSON is called, this calls 4000 times getRandomText method', () => {
-    spyOn(testBedImageJsonService, 'getRandomText');
+    const spy = jasmine.createSpy('spy');
+    testBedImageJsonService['getRandomText'] = spy;
     testBedImageJsonService.getJSON()
-    expect(testBedImageJsonService.getRandomText).toHaveBeenCalledTimes(4000);
+    expect(spy).toHaveBeenCalledTimes(4000);
   });
 });

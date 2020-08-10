@@ -53,7 +53,7 @@ describe('ImageJSONComponent', () => {
 
   it('if the method createJSON is called this calls once ImageJsonService`s getJSON method', () => {   
     spyOn(testBedImageJsonService, 'getJSON').and.returnValue(component.imageJSONList);
-    component.createJSON();
+    component['createJSON']();
     expect(testBedImageJsonService.getJSON).toHaveBeenCalledTimes(1);
   });
 

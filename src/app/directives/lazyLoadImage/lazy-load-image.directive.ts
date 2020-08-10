@@ -8,6 +8,7 @@ export class LazyLoadImagesDirective implements OnInit, OnDestroy{
   private rootElement: HTMLElement;
   @Output() inViewportChange = new EventEmitter<boolean>();
   @Output() onLoadError = new EventEmitter<boolean>();
+  @Output() imagesInViewPortEmitter = new EventEmitter<void>();
   
   constructor(private element: ElementRef, private renderer: Renderer2) {
       this.rootElement = element.nativeElement;
@@ -64,6 +65,7 @@ export class LazyLoadImagesDirective implements OnInit, OnDestroy{
 
   private onIntersectionChange(image: IntersectionObserverEntry) {
     if (!image.isIntersecting) {
+     this.imagesInViewPortEmitter.emit();
       return;
     }
 
