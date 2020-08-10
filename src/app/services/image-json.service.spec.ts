@@ -2,7 +2,7 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { ImageJsonService } from './image-json.service';
 
-fdescribe('ImageJsonService', () => {
+describe('ImageJsonService', () => {
 
   let testBedImageJsonService:ImageJsonService;
   

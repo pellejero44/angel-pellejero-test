@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, Input, OnInit, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, Renderer2, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 
 @Directive({
   selector: '[ldImages]'
@@ -6,7 +6,9 @@ import { Directive, ElementRef, Renderer2, Input, OnInit, OnDestroy } from '@ang
 export class LazyLoadImagesDirective implements OnInit, OnDestroy{
   private intersectionObserver: IntersectionObserver;
   private rootElement: HTMLElement;
-
+  @Output() inViewportChange = new EventEmitter<boolean>();
+  @Output() onLoadError = new EventEmitter<boolean>();
+  
   constructor(private element: ElementRef, private renderer: Renderer2) {
       this.rootElement = element.nativeElement;
     }
@@ -73,8 +75,10 @@ export class LazyLoadImagesDirective implements OnInit, OnDestroy{
       this.renderer.setAttribute(image, 'src', image.dataset.src);
       this.renderer.listen(image, 'error', (event) => {
           this.renderer.setAttribute(image, 'src', '/assets/images/notFound.jpg');
+          this.onLoadError.emit(true);
       });
       this.renderer.removeAttribute(image, 'data-src');
+      this.inViewportChange.emit(true);
     }
 
     if (this.intersectionObserver) {

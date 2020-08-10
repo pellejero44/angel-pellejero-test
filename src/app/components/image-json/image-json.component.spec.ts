@@ -4,9 +4,8 @@ import { ImageJSONComponent } from './image-json.component';
 import { FormsModule } from '@angular/forms';
 import { ImageFilterPipe } from 'src/app/pipes/image-filter.pipe';
 import { ImageJsonService } from 'src/app/services/image-json.service';
-import { ImageJSON } from 'src/app/models/imageJsSON-model';
 
-fdescribe('ImageJSONComponent', () => {
+describe('ImageJSONComponent', () => {
   let component: ImageJSONComponent;
   let fixture: ComponentFixture<ImageJSONComponent>;
   let compiled: HTMLElement;
