@@ -23,11 +23,10 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
   })
   class ContainerComponent implements OnInit {
     private imageLoadedCounter:number;
+    private imageFailedEmiter:EventEmitter<boolean> = new EventEmitter();     
+    private imagesViewPortEmiter: EventEmitter<void>= new EventEmitter();
     public imageJSON_List: ImageJSON[];
-    
-    @Output() imageFailedEmiter:EventEmitter<boolean> = new EventEmitter(); ;    
-    @Output() imagesViewPortEmiter: EventEmitter<void>= new EventEmitter();;
-    
+
     constructor() { }
   
     ngOnInit(): void {
@@ -53,6 +52,15 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
        return randomText;
     }
 
+    private createJSON():void{
+      for(let i =0; i< 40; i++){
+        if(i==2)
+          this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'fake/500/500', this.getRandomText()));
+        else
+          this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'/500/500', this.getRandomText()));
+      }
+    }
+
     public imageIsIntersecting():void{
       this.imageLoadedCounter++;   
     }
@@ -63,15 +71,6 @@ import { LazyLoadImagesDirective } from './lazy-load-image.directive';
 
     public imagesViewPortHandler():void{
       this.imagesViewPortEmiter.emit();   
-    }
-
-    public createJSON():void{
-      for(let i =0; i< 40; i++){
-        if(i==2)
-          this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'fake/500/500', this.getRandomText()));
-        else
-          this.imageJSON_List.push(new ImageJSON(i+'','https://picsum.photos/id/'+i+'/500/500', this.getRandomText()));
-      }
     }
 
 }
@@ -102,7 +101,7 @@ describe('LazyLoadImagesDirective', () => {
       });
 
       it('The last img that is in the viewport, his src doesnt should be null', (done:DoneFn) => {
-        component.imagesViewPortEmiter.subscribe(() => {          
+        component['imagesViewPortEmiter'].subscribe(() => {          
           let source= compiled.querySelectorAll('img')[0].getAttribute('src');
           expect(source).not.toBeNull();
           done();
@@ -111,7 +110,7 @@ describe('LazyLoadImagesDirective', () => {
       });
 
       it('The last img that is not in the viewport, his src should be null', (done:DoneFn) => {       
-        component.imagesViewPortEmiter.subscribe(() => {
+        component['imagesViewPortEmiter'].subscribe(() => {
           const imagesFoundInDOM = compiled.querySelectorAll('img');
           let source= imagesFoundInDOM[imagesFoundInDOM.length - 1].getAttribute('src');
           expect(source).toBeNull();
@@ -123,15 +122,15 @@ describe('LazyLoadImagesDirective', () => {
 
       it('if there are 40 images to load, the viewport only load the images that are in the viewport', 
       (done:DoneFn) => { 
-        component.imagesViewPortEmiter.subscribe(() => {
-          expect(component.imageLoadedCounter).toBeLessThan(40); 
+        component['imagesViewPortEmiter'].subscribe(() => {          
+          expect(component['imageLoadedCounter']).toBeLessThan(40); 
           done();
         });
         fixture.detectChanges();    
       });
 
        it('if some image fail on load, the image will  load an auxiliar image', (done:DoneFn) => {       
-        component.imageFailedEmiter.subscribe((x) => {
+        component['imageFailedEmiter'].subscribe((x) => {
           expect(x).toBe(true); 
           done();
         });  
