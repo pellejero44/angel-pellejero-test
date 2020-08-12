@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
-import { async, TestBed, ComponentFixture, tick, fakeAsync} from '@angular/core/testing';
+import { Component, OnInit, EventEmitter} from '@angular/core';
+import { async, TestBed, ComponentFixture} from '@angular/core/testing';
 import { ImageJSON } from 'src/app/models/imageJsSON-model';
 import { LazyLoadImagesDirective } from './lazy-load-image.directive';
 

@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-
 import { ImageJSONComponent } from './image-json.component';
 import { FormsModule } from '@angular/forms';
 import { ImageFilterPipe } from 'src/app/pipes/image-filter.pipe';

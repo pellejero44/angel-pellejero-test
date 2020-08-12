@@ -1,5 +1,4 @@
 import { TestBed, async } from '@angular/core/testing';
-
 import { ImageJsonService } from './image-json.service';
 
 describe('ImageJsonService', () => {
